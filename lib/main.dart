@@ -1,23 +1,50 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import './UI/home.dart';
+import './UI/exp.dart';
 import 'package:google_fonts/google_fonts.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 
 //import './UI/front.dart';
 void main() {
-  runApp(First());
-}
-
-class First extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(home: new OneApp());
-  }
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
+  runApp(
+    MaterialApp(
+      initialRoute: "/",
+      routes: {
+        "/": (context) => OneApp(),
+        "/cont": (context) => Myapp(),
+        "/exp": (context) => Exp()
+      },
+    ),
+  );
 }
 
 class OneApp extends StatelessWidget {
+  //final googleSignIn = GoogleSignIn();
+
+  // GoogleSignIn() async {
+  //   GoogleSignInAccount googleSignInAccount = await GoogleSignIn().signIn();
+  //   if(googleSignInAccount!=null)
+  //   {
+  //     GoogleSignInAuthentication googleSignInAuthentication=await googleSignInAccount.authentication;
+  //    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
+  //  accessToken: googleSignInAuthentication.accessToken,
+  //   idToken: googleSignInAuthentication.idToken,
+  // );
+  //   }
+
+  // }
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    String email = '';
+    String pswd = '';
+    var authc = FirebaseAuth.instance;
+    return Scaffold(
       appBar: AppBar(
         actions: [],
         title: Text(
@@ -63,6 +90,9 @@ class OneApp extends StatelessWidget {
                       width: 400,
                       padding: EdgeInsets.all(30.0),
                       child: TextField(
+                        onChanged: (value) {
+                          email = value;
+                        },
                         autocorrect: false,
                         textAlign: TextAlign.justify,
                         decoration: InputDecoration(
@@ -81,6 +111,9 @@ class OneApp extends StatelessWidget {
                       width: 400,
                       padding: EdgeInsets.all(30.0),
                       child: TextField(
+                        onChanged: (value) {
+                          pswd = value;
+                        },
                         obscureText: true,
                         cursorColor: Colors.orange.shade300,
                         autocorrect: false,
@@ -105,22 +138,33 @@ class OneApp extends StatelessWidget {
                         style: GoogleFonts.lato(),
                       ),
                     ),
-                    FlatButton(
-                        height: 68,
-                        minWidth: 98,
-                        textColor: Colors.blue.shade400,
-                        color: Colors.white,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (context) => new Myapp()),
-                          );
-                        },
-                        child: Text('Submit')),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        minimumSize: Size(98, 68),
+                        backgroundColor: Colors.white,
+                      ),
+                      onPressed: () async {
+                        try {
+                          var user = await authc.createUserWithEmailAndPassword(
+                              email: email, password: pswd);
+                          // ignore: unnecessary_statements
+                          //user.additionalUserInfo.isNewUser;
+                          if (user != null) {
+                            Navigator.pushNamed(context, "/cont");
+                          }
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(color: Colors.blue.shade400),
+                      ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.ideographic,
                       children: [
                         Container(
                           width: 100,
@@ -133,14 +177,17 @@ class OneApp extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage('assets/googl.png'),
+                        GestureDetector(
+                          //onTap: ,
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage('assets/googl.png'),
+                              ),
                             ),
                           ),
                         ),

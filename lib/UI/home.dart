@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import './exp.dart';
 import 'package:http/http.dart' as http;
 
 String container;
@@ -19,9 +18,11 @@ class Myapp extends StatefulWidget {
 
 class _MyappState extends State<Myapp> {
   web(container, pull, list, image, remove) async {
-    var url =
-        'http://192.168.43.218/cgi-bin/net.py?q=$os&x=$image&z=$remove&y=$list&w=$pull&v=$container';
-    var response = await http.get(url);
+    // var url =    'http://192.168.43.218/cgi-bin/net.py?q=$os&x=$image&z=$remove&y=$list&w=$pull&v=$container';
+
+    var response = await http.get(Uri.http(
+        "192.168.43.218:80", "/cgi-bin/net.py", {"q": "$os", "x": "$image","z":"$remove","y":"$list","w":"$pull","v":"$container"}));
+    print(response.body);
     setState(() {
       webdata = response.body;
     });
@@ -210,26 +211,26 @@ class _MyappState extends State<Myapp> {
                       ),
                     ),
                   ),
-                  FlatButton(
-                    color: Colors.orange.shade300,
+                  TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: Colors.orange.shade300),
                     onPressed: () {
                       web(container, pull, list, image, remove);
                       //print(image);
                     },
                     child: Text('Click Here'),
                   ),
-                  FlatButton(
-                    color: Colors.orange.shade300,
+                  TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: Colors.orange.shade300),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(builder: (context) => new Exp()),
-                      );
+                      Navigator.pushNamed(context, "/exp");
                     },
                     child: Text('Expert Go Here'),
                   ),
-                  FlatButton(
-                    color: Colors.blue.shade300,
+                  TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: Colors.orange.shade300),
                     onPressed: () {
                       Navigator.pop(context);
                     },

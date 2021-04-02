@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "627049181465",
+    "project_id": "dockers-7238f",
+    "storage_bucket": "dockers-7238f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627049181465:android:3f9cd66c95995715d4d588",
+        "android_client_info": {
+          "package_name": "com.example.docapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "627049181465-g34943ik82uuccalr36gi6ue338crgbq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv8CkmuO_OT26VjWDe5v_kuQnO2MUw5f4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "627049181465-g34943ik82uuccalr36gi6ue338crgbq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

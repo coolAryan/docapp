@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-String order;
-var netdata;
+//import 'package:firebase_core/firebase_core.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
+String order = '';
+var netdata = '';
 
 class Exp extends StatefulWidget {
   @override
@@ -11,8 +13,11 @@ class Exp extends StatefulWidget {
 
 class _ExpState extends State<Exp> {
   net(order) async {
-    var url = 'http://192.168.43.218/cgi-bin/netwrk.py?r=$order';
-    var response = await http.get(url);
+    // var url = Uri.parse('http://192.168.43.218/cgi-bin/netwrk.py?r=$order');
+
+    var response = await http.get(
+        Uri.http("192.168.43.218:80", "/cgi-bin/netwrk.py", {"r": "$order"}));
+    print(response.body);
     setState(() {
       netdata = response.body;
     });
@@ -23,6 +28,7 @@ class _ExpState extends State<Exp> {
 
   @override
   Widget build(BuildContext context) {
+    //var fs = FirebaseFirestore.instance;
     return new MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -62,8 +68,9 @@ class _ExpState extends State<Exp> {
                     ),
                   ),
                 ),
-                FlatButton(
-                  color: Colors.orange.shade300,
+                TextButton(
+                  style: TextButton.styleFrom(
+                      backgroundColor: Colors.orange.shade300),
                   onPressed: () {
                     net(order);
                     //print(image);
